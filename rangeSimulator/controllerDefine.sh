@@ -1,6 +1,6 @@
-#! /bin/sh
+#! /bin/bash
 
-readonly CONST_TIMER_max=60
+readonly CONST_TIMER_MAX=60
 
 readonly CONST_WATT_100=1
 readonly CONST_WATT_200=2
