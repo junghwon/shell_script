@@ -20,6 +20,8 @@ keyController_ScanKey() {
 }
 
 keyController_GetKey() {
+    #echo "keyController_GetKey" # デバッグ用
+
     rsp="false"
 
     if [ "${keyController_Field[isNewKey]}" = "true" ]; then
@@ -44,3 +46,4 @@ keyController_GetKey() {
 #         echo "aキーが押されました"
 #     fi
 # done
+# ===== 単体テスト =====

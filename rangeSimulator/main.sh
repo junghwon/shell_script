@@ -7,19 +7,25 @@
 mainProc() {
     while true; do
         controller_Manager
+        controller_TimerSetting
     done
 }
 
 keyScan() {
     while true; do
         keyController_ScanKey
-        moji=$(keyController_GetKey "a")
-        if [ "$moji" = "true" ]; then
-            echo "aキーが押されました"
-        fi
+
+        # ===== 単体テスト =====
+#        moji=$(keyController_GetKey "a")
+#        if [ "$moji" = "true" ]; then
+#            echo "aキーが押されました"
+#        fi
+        # ===== 単体テスト =====
+
     done
 }
 
-keyController_Init
-keyScan
+controller_Init
+keyController_Init  # デバッグ用
 mainProc &
+keyScan
