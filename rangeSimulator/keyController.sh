@@ -1,11 +1,21 @@
 #! /bin/bash
 
+KEYFIFO="/tmp/keyController_fifo"
+STATEFIFO="/tmp/keyController_state_fifo"
+
 declare -A keyController_Field
 
 keyController_Init() {
+	# field init
     keyController_Field[keyCodeBuff]=" "
     keyController_Field[keyCode]=" "
     keyController_Field[isNewKey]="false"
+
+	# FIFO init
+	rm -f "$KEYFIFO" "$STATEFIFO"
+	mkfifo "$KEYFIFO" 2> /dev/null
+	mkfifo "$STATEFIFO" 2> /dev/null
+	echo "false" > "$STATEFIFO" &
 }
 
 keyController_ScanKey() {

@@ -29,3 +29,5 @@ controller_Init
 keyController_Init  # デバッグ用
 mainProc &
 keyScan
+
+# test
