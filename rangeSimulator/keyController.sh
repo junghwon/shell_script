@@ -18,14 +18,13 @@ keyController_Init() {
 	echo "false" > "$STATEFIFO" &
 }
 
+
 keyController_ScanKey() {
     read keyInputBuff
-    keyController_Field[keyCodeBuff]="$keyInputBuff"
-
-    if [ "${keyController_Field[keyCodeBuff]}" != "\n" ]; then
-        keyController_Field[isNewKey]="true"
-        keyController_Field[keyCode]="${keyController_Field[keyCodeBuff]}"
-        # echo ${keyController_Field[keyCode]}  # デバッグ用
+    
+    if [ "$keyInputBuff" != "\n" ]; then
+        echo "$keyInputBuff" > "KEYFIFO" 2>/dev/null &
+        echo "true" > "STATEFIFO" 2>/dev/null &
     fi
 }
 
