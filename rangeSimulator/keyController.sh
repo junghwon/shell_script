@@ -20,7 +20,7 @@ keyController_ScanKey() {
     
     if [ "$keyInputBuff" != "\n" ]; then
         echo "$keyInputBuff" > "KEYFIFO" 2>/dev/null &
-        echo "true" > "STATEFIFO" 2>/dev/null &
+        echo "true" > "$STATEFIFO" 2>/dev/null &
     fi
 }
 
