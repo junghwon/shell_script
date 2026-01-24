@@ -11,31 +11,29 @@ keyController_Init() {
 	mkfifo "$STATEFIFO" 2> /dev/null
 	echo "false" > "$STATEFIFO" &
 
-	echo "debug1" # debug
+	echo "debug_keyController_1" # debug
 }
 
 
 keyController_ScanKey() {
-    read keyInputBuff
-    
-    if [ "$keyInputBuff" != "\n" ]; then
-        echo "$keyInputBuff" > "KEYFIFO" 2>/dev/null &
+    read keyInputBuff < /dev/tty
+
+    if [ "$keyInputBuff" != "" ]; then
+        echo "$keyInputBuff" > "$KEYFIFO" 2>/dev/null &
         echo "true" > "$STATEFIFO" 2>/dev/null &
     fi
 }
 
 keyController_GetKey() {
     rsp="false"
-	targetKey=" "
-	echo "debug3" # debug
+	targetKey="$1"
 
     if [ -p "$KEYFIFO" ]; then
-		currentKey=$(timeout 0.01 cat < "$KEYFIFO" 2>/dev/null)
+		currentKey=$(timeout 0.5 cat < "$KEYFIFO" 2>/dev/null)
 
 		if [ "$currentKey" = "$targetKey" ]; then
 			rsp="true"
 			echo "false" > "$STATEFIFO" 2>/dev/null &
-			echo "debug2" # debug
 		fi
 	fi
 
