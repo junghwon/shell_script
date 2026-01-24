@@ -5,9 +5,12 @@
 #. ./keyController.sh   # デバッグ用
 
 mainProc() {
+	echo "debug_main4"
     while true; do
+		echo "debug_main"
         controller_Manager
         controller_TimerSetting
+		sleep 0.05
     done
 }
 
@@ -25,9 +28,24 @@ keyScan() {
     done
 }
 
+# 初期化
 controller_Init
-keyController_Init  # デバッグ用
-mainProc &
-keyScan
+#keyController_Init  # デバッグ用
 
-# test
+echo "debug_main2"
+
+# 並列実行
+mainProc &
+MAIN_PID=$!
+
+echo "debug_main3"
+
+keyScan &
+SCAN_PID=$!
+
+# スクリプト終了時にクリーンアップ
+# trap "kill $MAIN_PID $SCAN_PID 2>/dev/null; rm -f /tmp/keyController_fifo /tmp/keyController_state_fifo" EXIT
+
+# wait
+
+

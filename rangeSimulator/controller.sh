@@ -14,8 +14,10 @@ controller_Init() {
 
 controller_TimerSetting () {
 #    echo "controller_TimerSetting"  # デバッグ用
+	echo "debug4"
 
     moji=$(keyController_GetKey "t")
+	echo "debug5"
     if [ "$moji" = "true" ]; then
         echo "$moji"    # デバッグ用
 #        if [ "${controller_Field[timer]}" -lt $CONST_TIMER_MAX ]; then

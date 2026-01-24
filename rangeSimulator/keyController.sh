@@ -3,19 +3,15 @@
 KEYFIFO="/tmp/keyController_fifo"
 STATEFIFO="/tmp/keyController_state_fifo"
 
-declare -A keyController_Field
 
 keyController_Init() {
-	# field init
-    keyController_Field[keyCodeBuff]=" "
-    keyController_Field[keyCode]=" "
-    keyController_Field[isNewKey]="false"
-
 	# FIFO init
 	rm -f "$KEYFIFO" "$STATEFIFO"
 	mkfifo "$KEYFIFO" 2> /dev/null
 	mkfifo "$STATEFIFO" 2> /dev/null
 	echo "false" > "$STATEFIFO" &
+
+	echo "debug1" # debug
 }
 
 
@@ -29,17 +25,19 @@ keyController_ScanKey() {
 }
 
 keyController_GetKey() {
-    #echo "keyController_GetKey" # デバッグ用
-
     rsp="false"
+	targetKey=" "
+	echo "debug3" # debug
 
-    if [ "${keyController_Field[isNewKey]}" = "true" ]; then
-        if [ "${keyController_Field[keyCode]}" = "$1" ]; then
-            keyController_Field[keyCode]=" "
-            keyController_Field[isNewKey]="false"
-            rsp="true"
-        fi
-    fi
+    if [ -p "$KEYFIFO" ]; then
+		currentKey=$(timeout 0.01 cat < "$KEYFIFO" 2>/dev/null)
+
+		if [ "$currentKey" = "$targetKey" ]; then
+			rsp="true"
+			echo "false" > "$STATEFIFO" 2>/dev/null &
+			echo "debug2" # debug
+		fi
+	fi
 
     echo $rsp
 }
